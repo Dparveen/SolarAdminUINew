@@ -7,50 +7,50 @@ File: style.css
 =================================================================================== */
 
 // Theme Font
-@import 'themes/font/theme-font';
+@import 'themes/font/_theme-font';
 
 // theme scrollbar
-@import 'themes/plugin/perfect-scrollbar';
+@import 'themes/plugin/_perfect-scrollbar';
 
 // main framework
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'settings/custom-variables';
-@import 'settings/theme-variables';
+// @import 'bootstrap/scss/functions';
+// @import 'bootstrap/scss/variables';
+@import 'settings/_custom-variables';
+@import 'settings/_theme-variables';
 
 // ng module
-@import 'react-module/react-module';
+@import 'react-module/_react-module';
 
 // bootstrap
-@import 'bootstrap/scss/bootstrap';
+// @import 'bootstrap/scss/bootstrap';
 
 // icon
-@import 'themes/font/next-icon';
-@import 'themes/font/feather';
-@import 'themes/font/fontawesome';
+@import 'themes/font/_next-icon';
+@import 'themes/font/_feather';
+@import 'themes/font/_fontawesome';
 
 // bootstrap css
-@import 'themes/bootstrap-overlay/card';
-@import 'themes/bootstrap-overlay/button';
-@import 'themes/bootstrap-overlay/radiobox-checkbox';
-@import 'themes/bootstrap-overlay/switches';
-@import 'themes/bootstrap-overlay/badge';
-@import 'themes/bootstrap-overlay/popovers';
+@import 'themes/bootstrap-overlay/_card';
+@import 'themes/bootstrap-overlay/_button';
+@import 'themes/bootstrap-overlay/_radiobox-checkbox';
+@import 'themes/bootstrap-overlay/_switches';
+@import 'themes/bootstrap-overlay/_badge';
+@import 'themes/bootstrap-overlay/_popovers';
 
-@import 'themes/general';
-@import 'themes/generic';
+@import 'themes/_general';
+@import 'themes/_generic';
 
 // theme layouts
-@import 'themes/layouts/menu-lite';
+@import 'themes/layouts/_menu-lite';
 
 // Dashboard Widgets
-@import 'themes/dashboard/widget';
+@import 'themes/dashboard/_widget';
 
 //Chat
-@import 'themes/chat/chat';
+@import 'themes/chat/_chat';
 
 // pages
-@import 'themes/pages/authentication';
+@import 'themes/pages/_authentication';
 
 // custom
-@import 'themes/custom';
+@import 'themes/_custom';
