@@ -1,4 +1,4 @@
-const BaseUrl = "http://http://13.239.40.86:7300/";
+const BaseUrl = "http://13.239.40.86:7300";
 
 export const LOGIN_API_URL = BaseUrl+'/admin/staffLogin';
 export const ADD_STATE = BaseUrl+'/addState';

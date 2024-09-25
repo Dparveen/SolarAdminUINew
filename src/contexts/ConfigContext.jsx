@@ -6,8 +6,8 @@ import * as actionType from '../store/actions';
 
 const initialState = {
   ...CONFIG,
-  isOpen: [], //for active default menu
-  isTrigger: [] //for active default menu, set blank for horizontal
+  isOpen: [],
+  isTrigger: []
 };
 const ConfigContext = createContext(initialState);
 const { Provider } = ConfigContext;

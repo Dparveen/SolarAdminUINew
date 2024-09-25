@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 
 // react-bootstrap
 import { Card } from 'react-bootstrap';
@@ -31,18 +30,18 @@ const Signin1 = () => {
             <Card.Body>
               <img src={logoDark} alt="" className="img-fluid mb-4" />
               <AuthLogin />
-              <p className="mb-2 text-muted">
-                Forgot password?{' '}
+              {/* <p className="mb-2 text-muted">
+                Forgot password?
                 <NavLink to="/auth/reset-password-1" className="f-w-400">
                   Reset
                 </NavLink>
-              </p>
-              <p className="mb-0 text-muted">
-                Don’t have an account?{' '}
+              </p> */}
+              {/* <p className="mb-0 text-muted">
+                Don’t have an account?
                 <NavLink to="/auth/signup-1" className="f-w-400">
                   Signup
                 </NavLink>
-              </p>
+              </p> */}
               {/* <Alert variant="primary" className="text-start mt-3"> */}
                 {/* User:
                 <CopyToClipboard text="info@codedthemes.com">

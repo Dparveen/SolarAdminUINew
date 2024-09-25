@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_STAFF, DELETE_STAFF, GET_STATE_CITY, UPDATE_STAFF, } from 'config/api';
+import { ADD_STAFF, DELETE_STAFF, GET_STATE_CITY, UPDATE_STAFF } from 'config/api';
 import React, { useState } from 'react';
 import { Button, Card, Col, Form, Modal, Row, Spinner, Table } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -17,7 +17,6 @@ const Staff = () => {
   const [Val, setVal] = useState({});
   const [error, seterror] = useState(false);
   const [errorMsg, seterrorMsg] = useState(null);
-  const [Role, setRole] = useState(0);
   const [Name, setName] = useState(null);
   const [Pass, setPass] = useState(null)
   const [Email, setEmail] = useState(null);
@@ -28,6 +27,7 @@ const Staff = () => {
   const [tableFilterDataStaff, setTableFilterDataStaff] = useState([]);
   const [tableDepartment, settableDepartment] = useState([]);
   const [tableDepartmentAdmin, settableDepartmentAdmin] = useState([]);
+  const [Role, setRole] = useState(null);
   const [Session, setSession]=useState({});
   React.useEffect(() => {
     setTimeout(() => setIsLoading(false), 2000);
@@ -56,7 +56,11 @@ const Staff = () => {
   // Handle form submission (Add/Edit State)
   const handleFormSubmitState = async (e) => {
     e.preventDefault();
-    if (Role === '' || Role === 0) {
+    if(Session.role !== '0'){
+      setRole(1);
+      setDepartment(Session.department._id);
+    }
+    if (Session.role === '' || Role === 0) {
       seterror(true);
       seterrorMsg('Please Select Role first');
       return false;
@@ -94,7 +98,7 @@ const Staff = () => {
       return false;
     }
     const newEntry = { name: Name, role: Role,  status: Status, mob: Mobile, userId: Email, pass: Pass, city: City, state: State, department: Department, dep_admin: DepAdmin ? DepAdmin : Session._id };    
-    console.log(newEntry)
+    // console.log(newEntry)
     const response = await axios.post(ADD_STAFF, newEntry);
     if (response.data.status) {
       setTableDataState(response.data.data);
@@ -166,8 +170,9 @@ const Staff = () => {
     setTableFilterDataCity(filteredCities);
   }
   const showRole = (role) =>{
-    if(role === 2) return <span className="text-success">Admin</span>;
-    if(role === 1) return <span className="text-primary">Staff</span>;
+    console.log(role)
+    if(role === '2') return <span className="text-success">Admin</span>;
+    if(role === '1') return <span className="text-primary">Staff</span>;
   }
   const handleRole = (e) =>{
     e.preventDefault();
@@ -206,32 +211,45 @@ const Staff = () => {
                     <Table responsive>
                       <thead>
                         <tr>
-                          <th>Sr.</th>
+                          {/* <th>Sr.</th> */}
                           <th>Staff Name</th>
                           <th>Role</th>
                           <th>Department</th>
                           <th>Address</th>
                           <th>Credintials</th>
                           <th>Status</th>
-                          <th>Action</th>
+                          {Session.role !== '1' ? <th>Action</th> : ''}
                         </tr>
                       </thead>
                       <tbody>
-                        {tableFilterDataStaff.map((row, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{row.name}</td>
-                            <td>{showRole(row.role)}</td>
-                            <td>{row.department.dep_name}</td>
-                            <td>{row.city +' '+row.state}</td>
-                            <td>{row.userId}<br />{row.pass}</td>
-                            <td>{row.status ? 'Active' : 'Disable'}</td>
-                            <td>
-                              <i className="feather icon-edit text-warning" onClick={(e)=>handleStateEdit(e, row)}></i> &nbsp; &nbsp;
-                              <i className="feather icon-trash text-danger" onClick={(e)=> handleStateDelete(e, row)}></i>
+                      {tableFilterDataStaff.map((row, index) => {
+                          if (row.role === '0') {
+                            return null;
+                          }
+                          if(row.dep_admin !== Session._id){
+                            return null;
+                          }
+
+                          return (
+                            <tr key={index}>
+                              {/* <td>{index + 1}</td> */}
+                              <td>{row.name}</td>
+                              <td>{showRole(row.role)}</td>
+                              <td>{row.department.dep_name}</td>
+                              <td>{row.city + ' ' + row.state}</td>
+                              <td>{row.userId}<br />{row.pass}</td>
+                              <td>{row.status ? 'Active' : 'Disable'}</td>
+                              <td>
+                                <i className="feather icon-edit text-warning" onClick={(e) => handleStateEdit(e, row)}></i>
+                               {Role === 0 ?
+                                <i className="feather icon-trash text-danger" onClick={(e) => handleStateDelete(e, row)} ></i>
+                                :''}
                               </td>
-                          </tr>
-                        ))}
+                              
+                            </tr>
+                          );
+                        })}
+
                         {tableFilterDataState.length === 0 && <tr>No State found</tr>}
                       </tbody>
                     </Table>
@@ -250,43 +268,51 @@ const Staff = () => {
   
     <Form onSubmit={Val && Val.name ? (e)=>handleEditFormSubmitState(e, Val) :(e)=> handleFormSubmitState(e)}>
     <Row>
-    <Col sm={12}>
-      <Form.Group controlId="formStatus">
-        <Form.Label>Role</Form.Label>
-        <Form.Control as="select"  onChange={(e) => handleRole(e)} >
-          <option value={0}>Select Role</option>
-          <option value={2}>Admin</option>
-          <option value={1}>Staff</option>
-        </Form.Control>
-      </Form.Group>
-      </Col>
-      {parseInt(Role) != 0 && <Col sm={parseInt(Role) == 1 ? 6 : 12}>
-        <Form.Group controlId="formState">
-          <Form.Label>Department</Form.Label>
-          <Form.Control as="select"  onChange={(e) => handleDepartment(e)} >
-            <option key="0" value="">Select Department</option>
-            {tableDepartment.map((item, index) => (
-              <option key={index + 1} value={item._id}>
-                {item.dep_name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-      </Col>}
-      {parseInt(Role) === 1 ? <Col sm={6}>
-        <Form.Group controlId="formState">
-          <Form.Label>Select Department Admin</Form.Label>
-          <Form.Control as="select"  onChange={(e)=>setDepAdmin(e.target.value)} >
-            <option key="0" value="">Select Department Admin</option>
-            {tableDepartmentAdmin.map((item, index) => (
-              <option key={index + 1} value={item._id}>
-                {item.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-      </Col>:''
-      }
+    {Session.role === '0' && (
+  <Col sm={12}>
+    <Form.Group controlId="formStatus">
+      <Form.Label>Role</Form.Label>
+      <Form.Control as="select" onChange={(e) => handleRole(e)} >
+        <option value="">Select Role</option>
+        {Session.role === '0' && <option value={2}>Admin</option>}
+        <option value={1}>Staff</option>
+      </Form.Control>
+    </Form.Group>
+  </Col>
+)}
+
+{Session.role === '0' && parseInt(Role) !== 0 && (
+  <Col sm={parseInt(Role) === 1 ? 6 : 12}>
+    <Form.Group controlId="formState">
+      <Form.Label>Department</Form.Label>
+      <Form.Control as="select" onChange={(e) => handleDepartment(e)}>
+        <option key="0" value="">Select Department</option>
+        {tableDepartment.map((item, index) => (
+          <option key={index + 1} value={item._id}>
+            {item.dep_name}
+          </option>
+        ))}
+      </Form.Control>
+    </Form.Group>
+  </Col>
+)}
+
+{Session.role === '0' && parseInt(Role) === 1 && (
+  <Col sm={6}>
+    <Form.Group controlId="formState">
+      <Form.Label>Select Department Admin</Form.Label>
+      <Form.Control as="select" onChange={(e) => setDepAdmin(e.target.value)}>
+        <option key="0" value="">Select Department Admin</option>
+        {tableDepartmentAdmin.map((item, index) => (
+          <option key={index + 1} value={item._id}>
+            {item.name}
+          </option>
+        ))}
+      </Form.Control>
+    </Form.Group>
+  </Col>
+)}
+
       <Col sm={6}>
         <Form.Group controlId="formState">
           <Form.Label>Staff name</Form.Label>

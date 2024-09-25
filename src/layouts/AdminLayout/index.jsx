@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useRef } from 'react';
 
 // project import
-import Navigation from './Navigation';
-import NavBar from './NavBar';
 import Breadcrumb from './Breadcrumb';
+import NavBar from './NavBar';
+import Navigation from './Navigation';
 
-import useWindowSize from '../../hooks/useWindowSize';
-import useOutsideClick from '../../hooks/useOutsideClick';
-import { ConfigContext } from '../../contexts/ConfigContext';
-import * as actionType from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
+import { ConfigContext } from '../../contexts/ConfigContext';
+import useOutsideClick from '../../hooks/useOutsideClick';
+import useWindowSize from '../../hooks/useWindowSize';
+import * as actionType from '../../store/actions';
 
 // ==============================|| ADMIN LAYOUT ||============================== //
 

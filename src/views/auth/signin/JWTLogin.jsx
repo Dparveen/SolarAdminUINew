@@ -2,7 +2,7 @@
 import { Alert, Button, Col, Row } from 'react-bootstrap';
 
 // third party
-import axios from 'axios'; // Optional: Use axios for API calls
+import axios from 'axios';
 import { LOGIN_API_URL } from 'config/api';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -10,17 +10,23 @@ import * as Yup from 'yup';
 const JWTLogin = () => {
   const handleLogin = async (values, { setErrors, setSubmitting }) => {
     try {
-      // console.log(LOGIN_API_URL, values);
-      const response = await axios.post(LOGIN_API_URL, {
+      let request = {
         user: values.email,
-        pass: values.password
-      });
+        pass: values.password,
+        role: values.role,
+      };
+      // console.log(LOGIN_API_URL, request);
+      const response = await axios.post(LOGIN_API_URL, request);
 
       console.log('Login successful', response.data);
 
       if (response.data.status) {
+        if(response.data.auth){
         sessionStorage.setItem('authToken', JSON.stringify(response.data.data));
         window.location.href = '/phintexAdmin/dashboard';
+        }else{
+          setErrors({ submit: response.data.msg });
+        }
       } else {
         setErrors({ submit: 'Invalid email or password. Please try again.' });
       }
@@ -42,12 +48,29 @@ const JWTLogin = () => {
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          password: Yup.string().max(255).required('Password is required'),
+          role: Yup.string().max(255).required('Role is required'),
         })}
         onSubmit={handleLogin}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
+          <div className="form-group mb-3">
+              <select
+                className="form-control"
+                name="role"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="email"
+                value={values.role}
+              >
+                <option value={''}>Select Role</option>
+                <option value={'0'}>Super Admin</option>
+                <option value={'1'}>Staff</option>
+                <option value={'2'}>Admin</option>
+              </select>
+              {touched.role && errors.role && <small className="text-danger form-text">{errors.role}</small>}
+            </div>
             <div className="form-group mb-3">
               <input
                 className="form-control"

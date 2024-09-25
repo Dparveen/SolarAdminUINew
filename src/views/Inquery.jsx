@@ -19,8 +19,9 @@ const Inquery = () => {
   const [errorMsg, seterrorMsg] = useState(null);
   const [Role, setRole] = useState(0);
   const [Name, setName] = useState(null);
-  const [Pass, setPass] = useState(null)
-  const [Email, setEmail] = useState(null);
+  const [Load, setLoad] = useState(null);
+  const [Discom, setDiscom] = useState(null);
+  const [Bill, setBill] = useState(null);
   const [Mobile, setMobile] = useState(null);
   const [Department, setDepartment] = useState(null);
   const [DepAdmin, setDepAdmin] = useState(null);
@@ -72,13 +73,9 @@ const Inquery = () => {
       seterror(true);
       seterrorMsg('Please Enter valid Mobile number');
       return false;
-    }else if (Email === null || Email === '') {
+    }else if (Bill === null || Bill === '') {
       seterror(true);
-      seterrorMsg('Please Enter valid Email address');
-      return false;
-    }else if (Pass === null || Pass === '' || Pass.length <= 7) {
-      seterror(true);
-      seterrorMsg('Password Must be more than 8 digit');
+      seterrorMsg('Please Enter valid Bill address');
       return false;
     }else if (State === null || State === '') {
       seterror(true);
@@ -97,7 +94,7 @@ const Inquery = () => {
       seterrorMsg('Please Select Department');
       return false;
     }
-    const newEntry = { name: Name, role: Role,  status: Status, mob: Mobile, userId: Email, pass: Pass, city: City, state: State, department: Department, dep_admin: DepAdmin ? DepAdmin : Session._id };    
+    const newEntry = { name: Name, role: Role,  status: Status, mob: Mobile, bill_account_no: Bill, sanction_load: Load, city: City, state: State, department: Department, dep_admin: DepAdmin ? DepAdmin : Session._id };    
     console.log(newEntry)
     const response = await axios.post(ADD_STAFF, newEntry);
     if (response.data.status) {
@@ -278,7 +275,7 @@ const Inquery = () => {
       </Row>
       <Modal show={showModal} onHide={handleClose}>
   <Modal.Header closeButton>
-    <Modal.Title>{Val && Val.name ? 'Edit Staff' : 'Add Staff'}</Modal.Title>
+    <Modal.Title>{Val && Val.name ? 'Update Inquery' : 'Error'}</Modal.Title>
   </Modal.Header>
   <Modal.Body>
   
@@ -324,31 +321,37 @@ const Inquery = () => {
       <Col sm={6}>
         <Form.Group controlId="formState">
           <Form.Label>Lead ID</Form.Label>
-          <Form.Control type="text" placeholder="Lead ID" value={Val && Val.lead_id || ''} onChange={(e) => setName(e.target.value)} readonly={true} />
+          <Form.Control type="text" placeholder="Lead ID" value={Val && Val.lead_id || ''} readonly={true} />
         </Form.Group>
       </Col>
       <Col sm={6}>
         <Form.Group controlId="formState">
           <Form.Label>Name</Form.Label>
-          <Form.Control type="text" placeholder="Name" value={Val && Val.name || ''} onChange={(e) => setMobile(e.target.value)} />
+          <Form.Control type="text" placeholder="Name" value={Name || (Val && Val.name || '')} onChange={(e) => setName(e.target.value)} />
         </Form.Group>
       </Col>
       <Col sm={6}>
         <Form.Group controlId="formState">
           <Form.Label>Phone</Form.Label>
-          <Form.Control type="text" placeholder="Phone Number" value={Val && Val.mob || ''} onChange={(e) => setEmail(e.target.value)} />
+          <Form.Control type="text" placeholder="Phone Number" value={Mobile || (Val && Val.mob || '')} onChange={(e) => setMobile(e.target.value)} />
         </Form.Group>
       </Col> 
       <Col sm={6}>
         <Form.Group controlId="formState">
           <Form.Label>Discom</Form.Label>
-          <Form.Control type="text" placeholder="Discom" value={Val && Val.discom || ''} onChange={(e) => setPass(e.target.value)} />
+          <Form.Control type="text" placeholder="Discom" value={Discom || (Val && Val.discom || '')} onChange={(e) => setDiscom(e.target.value)} />
         </Form.Group>
       </Col>
       <Col sm={6}>
         <Form.Group controlId="formState">
-          <Form.Label>Discom</Form.Label>
-          <Form.Control type="text" placeholder="Discom" value={Val && Val.discom || ''} onChange={(e) => setPass(e.target.value)} />
+          <Form.Label>Bill Acc. No</Form.Label>
+          <Form.Control type="text" placeholder="Bill Account Number" value={Bill || (Val && Val.bill_account_no || '')} onChange={(e) => setBill(e.target.value)} />
+        </Form.Group>
+      </Col>
+      <Col sm={6}>
+        <Form.Group controlId="formState">
+          <Form.Label>Bill Acc. No</Form.Label>
+          <Form.Control type="text" placeholder="Sanction load" value={Load || (Val && Val.sanction_load || '')} onChange={(e) => setLoad(e.target.value)} />
         </Form.Group>
       </Col>
       <Col sm={6}>
@@ -389,7 +392,7 @@ const Inquery = () => {
       </Row>
       <hr />
       <Button variant="primary" type="submit">
-        {Val && Val.name ? 'Update Changes' : 'Add Changes'} 
+        {Val && Val.name ? 'Update Changes' : 'Error'} 
       </Button>
     </Form>
   </Modal.Body>
