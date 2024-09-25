@@ -27,30 +27,30 @@ File: style.css
 // icon
 @import 'themes/font/_next-icon';
 @import 'themes/font/_feather';
-@import 'themes/font/_fontawesome';
+@import 'themes/font/_fontawesome.scss';
 
 // bootstrap css
-@import 'themes/bootstrap-overlay/_card';
-@import 'themes/bootstrap-overlay/_button';
-@import 'themes/bootstrap-overlay/_radiobox-checkbox';
-@import 'themes/bootstrap-overlay/_switches';
-@import 'themes/bootstrap-overlay/_badge';
-@import 'themes/bootstrap-overlay/_popovers';
+@import 'themes/bootstrap-overlay/_card.scss';
+@import 'themes/bootstrap-overlay/_button.scss';
+@import 'themes/bootstrap-overlay/_radiobox-checkbox.scss';
+@import 'themes/bootstrap-overlay/_switches.scss';
+@import 'themes/bootstrap-overlay/_badge.scss';
+@import 'themes/bootstrap-overlay/_popovers.scss';
 
-@import 'themes/_general';
-@import 'themes/_generic';
+@import 'themes/_general.scss';
+@import 'themes/_generic.scss';
 
 // theme layouts
-@import 'themes/layouts/_menu-lite';
+@import 'themes/layouts/_menu-lite.scss';
 
 // Dashboard Widgets
-@import 'themes/dashboard/_widget';
+@import 'themes/dashboard/_widget.scss';
 
 //Chat
-@import 'themes/chat/_chat';
+@import 'themes/chat/_chat.scss';
 
 // pages
-@import 'themes/pages/_authentication';
+@import 'themes/pages/_authentication.scss';
 
 // custom
-@import 'themes/_custom';
+@import 'themes/_custom.scss';
